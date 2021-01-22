@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.matrix }}
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
       max-parallel: 1
 
     steps:
