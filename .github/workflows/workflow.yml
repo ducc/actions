@@ -44,10 +44,10 @@ jobs:
 
       - name: Run stg
         if: ${{ matrix.build_env }} == "stg"
-        run: echo "deploying stg!"
+        run: echo "deploying stg! ${{ matrix.build_env }}"
 
       - name: Run prod
         if: ${{ matrix.build_env }} == "prod"
-        run: echo "deploying prod!"
+        run: echo "deploying prod! ${{ matrix.build_env }}"
 
 
