@@ -38,15 +38,15 @@ jobs:
 
     steps:
       - name: Run dev
-        if: ${{ matrix.build_env == "dev" }}
+        if: ${{ matrix.build_env }} == "dev"
         run: echo "deploying dev!"
 
       - name: Run stg
-        if: ${{ matrix.build_env == "stg" }}
+        if: ${{ matrix.build_env }} == "stg"
         run: echo "deploying stg!"
 
       - name: Run prod
-        if: ${{ matrix.build_env == "prod" }}
+        if: ${{ matrix.build_env }} == "prod"
         run: echo "deploying prod!"
 
 
