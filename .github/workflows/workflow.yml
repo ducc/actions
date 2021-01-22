@@ -1,0 +1,52 @@
+name: workflow
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs: 
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          environments=("dev" "stg" "prod")
+          build_env="["
+          
+          for env in ${environments[@]}; do
+            if [[ $env == "dev" || $env == "stg" || $env == "prod" ]]; then
+              build_env="$build_env\"$env\",";
+            fi
+          done
+
+          build_env="${build_env%,}]"
+          echo "::set-output name=matrix::{\"build_env\":$build_env}"
+
+  deploy:
+    needs: setup
+    environment:
+      name: ${{ matrix.build_env }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix: ${{ fromJson(needs.setup.outputs.matrix }}
+      max-parallel: 1
+
+    steps:
+      - name: Run dev
+        if: ${{ matrix.build_env == "dev" }}
+        run: echo "deploying dev!"
+
+      - name: Run stg
+        if: ${{ matrix.build_env == "stg" }}
+        run: echo "deploying stg!"
+
+      - name: Run prod
+        if: ${{ matrix.build_env == "prod" }}
+        run: echo "deploying prod!"
+
+
